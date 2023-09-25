@@ -24,3 +24,7 @@ C
 Model/User.js,c/8/c82c40afa0dd0a4a530e3f70c60d5a9fdd139b22
 J
 graphql/resolvers/users.js,c/9/c9f677c212b7f702399c81ac568237bc957e6ef5
+A
+util/checkAuth.js,c/8/c870fb8ec51db73776c26c683e51e21f9501cce4
+L
+graphql/resolvers/reviews.js,6/f/6f9db8e23645142662bbfa350beb5ae0d993a008

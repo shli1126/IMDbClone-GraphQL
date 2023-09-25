@@ -8,10 +8,10 @@ const movieSchema= new Schema({
     genres: [String],
     poster: String,
     backdrops: [String],
-    reviewsIds: [
+    reviewIds: [
         {
-            type: Schema.Types.ObjectId,
-            ref: 'Review'
+            body: String,
+            createdAt: String,
         }
     ]
 })

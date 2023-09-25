@@ -18,6 +18,11 @@ module.exports = gql`
         password: String!,
         createdAt: String!,
     }
+    type Review {
+        body: String!
+        createdAt: String!
+        createdBy: User!
+    }
     input RegisterInput{
         username: String!
         password: String!
@@ -30,5 +35,7 @@ module.exports = gql`
     type Mutation {
         register(registerInput: RegisterInput!): User!
         login(username: String!, password: String!): User!
+        addReview(imdbId: String!, body: String!): Review!
+        addToUserWatchList(imdbId: String!): User!
     }
 `

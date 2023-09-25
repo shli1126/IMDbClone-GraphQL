@@ -4,6 +4,8 @@ const {SECRET_KEY} = require('../../config')
 const {validateRegisterInput, validateLoginInput} = require('../../util/validators')
 const {UserInputError} = require('apollo-server')
 const User = require("../../Model/User")
+const checkAuth = require("../../util/checkAuth");
+const Movie = require("../../Model/Movie");
 
 function generateToken(user) {
     return jwt.sign(
@@ -56,5 +58,45 @@ module.exports = {
                 token
             }
         }
+        ,
+        async login(_, {username, password}){
+            const {errors, valid} = validateLoginInput(username, password)
+
+            if (!valid) {
+                throw new UserInputError('Input cannot be empty', {errors})
+            }
+            const user = await User.findOne({username})
+            if (!user) {
+                errors.general = "User not found";
+                throw new UserInputError('User not found', {errors})
+            }
+            const match = await bcrypt.compare(password, user.password);
+            if (!match) {
+                errors.general = "Wrong password"
+                throw new UserInputError('Wrong password', {errors});
+            }
+            const token = generateToken(user);
+            return {
+                ...user._doc,
+                id: user._id,
+                token
+            }
+        }
+        ,
+        async addToUserWatchList(_, {imdbId}, context){
+            const userInfo = checkAuth(context)
+            const movie = await Movie.findOne({imdbId})
+            const user = await User.findById(userInfo.id)
+            console.log(user)
+            if (movie) {
+                user.watchList.unshift(movie.id)
+                await user.save();
+                return user
+            }
+            else {
+                throw new UserInputError('Movie not found');
+            }
+        }
+
     }
 }

@@ -9,5 +9,5 @@ module.exports = {
                 throw new Error(err)
             }
         }
-    }
+    },
 }
